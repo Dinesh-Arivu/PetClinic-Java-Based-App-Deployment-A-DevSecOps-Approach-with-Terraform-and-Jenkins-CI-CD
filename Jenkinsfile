@@ -55,6 +55,22 @@ pipeline{
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
         }
+        stage('TRIVY FS SCAN') {
+            steps {
+                sh "trivy fs . > trivyfs.txt"
+            }
+        }
+        stage("Docker Build & Push"){
+            steps{
+                script{
+                   withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
+                       sh "docker build -t petclinic ."
+                       sh "docker tag petclinic dinesh1097/petclinic:latest "
+                       sh "docker push dinesh1097/petclinic:latest "
+                    }
+                }
+            }
+        }
     } 
 }    
     
