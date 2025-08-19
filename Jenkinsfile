@@ -81,6 +81,22 @@ pipeline{
                 sh "docker run -d --name petclinic -p 8082:8080 dinesh1097/petclinic:latest"
             }
         }
+        stage("Deploy To Tomcat"){
+            steps{
+                sh "sudo cp  /var/lib/jenkins/workspace/petclinic/target/petclinic.war /opt/apache-tomcat-9.0.65/webapps/ "
+            }
+        }
+        stage('Deploy to kubernets'){
+            steps{
+                script{
+                    dir('K8S') {
+                        withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
+                                sh 'kubectl apply -f deployment.yml'
+                        }
+                    }
+                }
+            }
+        }
     } 
 }    
     
