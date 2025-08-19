@@ -1,5 +1,5 @@
 # Spring PetClinic Sample Application  
-# Modified By AJAY KUAMR YEGIREDDI  https://www.youtube.com/@mr.cloudbook
+Blog Link- https://mrcloudbook.com/complete-ci-cd-petclinic-project-devsecops/
 
 <div align="center"> <img src="https://raw.githubusercontent.com/Aj7Ay/Petclinic-Real/main/Ajay1.png"> </div>
 [![Java CI with Maven](https://github.com/spring-petclinic/spring-framework-petclinic/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-petclinic/spring-framework-petclinic/actions/workflows/maven-build.yml)
