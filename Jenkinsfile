@@ -71,6 +71,16 @@ pipeline{
                 }
             }
         }
+        stage("TRIVY"){
+            steps{
+                sh "trivy image dinesh1097/petclinic:latest > trivyimage.txt"
+            }
+        }
+        stage("deploy_docker"){
+            steps{
+                sh "docker run -d --name petclinic -p 8082:8080 dinesh1097/petclinic:latest"
+            }
+        }
     } 
 }    
     
