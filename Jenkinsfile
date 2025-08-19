@@ -15,7 +15,7 @@ pipeline{
         }
         stage('Checkout From Git'){
             steps{
-                git branch: 'main', url: 'https://github.com/Aj7Ay/Petclinic-Real.git'
+                git branch: 'main', url: 'https://github.com/Dinesh-Arivu/PetClinic-Java-Based-App-Deployment-A-DevSecOps-Approach-with-Terraform-and-Jenkins-CI-CD.git'
             }
         }
         stage('mvn compile'){
@@ -59,24 +59,24 @@ pipeline{
             steps{
                 script{
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){   
-                       sh "docker build -t petclinic1 ."
-                       sh "docker tag petclinic1 sevenajay/petclinic1:latest "
-                       sh "docker push sevenajay/petclinic1:latest "
+                       sh "docker build -t petclinic ."
+                       sh "docker tag petclinic dinesh1097/petclinic:latest "
+                       sh "docker push dinesh1097/petclinic:latest "
                     }
                 }
             }
         }
         stage("TRIVY"){
             steps{
-                sh "trivy image sevenajay/petclinic1:latest > trivy.txt" 
+                sh "trivy image dinesh1097/petclinic:latest > trivy.txt" 
             }
         }
         stage('Clean up containers') {   //if container runs it will stop and remove this block
           steps {
            script {
              try {
-                sh 'docker stop pet1'
-                sh 'docker rm pet1'
+                sh 'docker stop petclinic'
+                sh 'docker rm petclinic'
                 } catch (Exception e) {
                   echo "Container pet1 not found, moving to next stage"  
                 }
@@ -111,7 +111,7 @@ pipeline{
     }
         stage('Deploy to conatiner'){
             steps{
-                sh 'docker run -d --name pet1 -p 8082:8080 sevenajay/petclinic1:latest'
+                sh 'docker run -d --name petclinic -p 8082:8080 dinesh1097/petclinic:latest'
             }
         }
         stage("Deploy To Tomcat"){
@@ -123,7 +123,7 @@ pipeline{
             steps{
                 script{
                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
-                       sh 'kubectl apply -f deployment.yaml'
+                       sh 'kubectl apply -f K8S/deployment.yaml'
                   }
                 }
             }
